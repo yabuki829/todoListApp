@@ -8,7 +8,7 @@ class Todoview extends StatefulWidget {
 }
 
 class _TodoviewState extends State<Todoview> {
-  String myGoal = "メルカリでエンジニアとして働く";
+  String myGoal = "一流のプログラマになる";
   List _todoList = [];
   Future<void> getTodoList() async {
     // final url = Uri.https("api.github.com","users/yabuki829/repos");
