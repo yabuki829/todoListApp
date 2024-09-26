@@ -21,7 +21,7 @@ class _SettingsViewState extends State<SettingsView> {
           ),
         ),
       ),
-      body: const Text("rest"),
+      body: const Text("settings"),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:todoapp/responsive.dart';
 
 class BaseView extends StatefulWidget {
   const BaseView({
@@ -18,41 +19,69 @@ class _BaseViewState extends State<BaseView> {
     return Scaffold(
       body: Row(
         children: [
-          NavigationRail(
-            destinations: const <NavigationRailDestination>[
-              NavigationRailDestination(
-                icon: Icon(Icons.home),
-                label: Text('Home'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.newspaper),
-                label: Text('News'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.settings),
-                label: Text('Settings'),
-              ),
-            ],
-            selectedIndex: _selectedIndex,
-            onDestinationSelected: (int index) {
-              setState(
-                () {
-                  _selectedIndex = index;
-                  switch (_selectedIndex) {
-                    case 0:
-                      context.go('/');
-                    case 1:
-                      context.go("/news");
-                    case 2:
-                      context.go("/settings");
-                  }
-                },
-              );
-            },
-          ),
+          if (Responsive.isMobile(context)) ...[
+            NavigationRail(
+              destinations: const <NavigationRailDestination>[
+                NavigationRailDestination(
+                  icon: Icon(Icons.home),
+                  label: Text('Home'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.newspaper),
+                  label: Text('News'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.settings),
+                  label: Text('Settings'),
+                ),
+              ],
+              selectedIndex: _selectedIndex,
+              onDestinationSelected: (int index) {
+                setState(
+                  () {
+                    _selectedIndex = index;
+                    switch (_selectedIndex) {
+                      case 0:
+                        context.go('/');
+                      case 1:
+                        context.go("/news");
+                      case 2:
+                        context.go("/settings");
+                    }
+                  },
+                );
+              },
+            ),
+          ],
           Expanded(child: widget.child)
         ],
       ),
+      bottomNavigationBar: Responsive.isDesktop(context)
+          ? null
+          : BottomNavigationBar(
+              items: const [
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.home), label: "Home"),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.newspaper), label: "News"),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.settings), label: "Setting"),
+                ],
+              onTap: (index) {
+                setState(
+                  () {
+                    _selectedIndex = index;
+                    switch (_selectedIndex) {
+                      case 0:
+                        context.go('/');
+                      case 1:
+                        context.go("/news");
+                      case 2:
+                        context.go("/settings");
+                    }
+                  },
+                );
+              }),
     );
   }
 }
