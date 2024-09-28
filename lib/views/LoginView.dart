@@ -17,16 +17,33 @@ class _LoginViewState extends State<LoginView> {
   String email = '';
   String password = '';
 
+
+
+  
+
   @override
   Widget build(BuildContext context) {
-   
     final double deviceWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-        body: const SingleChildScrollView(
-      child: Responsive(
-        mobile: MobileLoginScreen(),
-        desktop: Text("デスクトップです"),
-      ),
-    ));
+        body: SingleChildScrollView(
+            child: Row(
+      children: [
+        if (deviceWidth < Responsive.sm.width)
+          ...[
+
+          ]
+        else if (deviceWidth < Responsive.md.width)
+          ...[]
+        else if (deviceWidth < Responsive.lg.width)
+          ...[]
+        else if (deviceWidth < Responsive.xl.width)
+          ...[]
+        else if (deviceWidth < Responsive.xxl.width)
+          ...[]
+        else
+          ...[],
+      ],
+    )));
   }
 }
