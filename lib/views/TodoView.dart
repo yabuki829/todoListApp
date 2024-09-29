@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:todoapp/components/TodoItemWidget.dart';
+import 'package:todoapp/notifier/todolist_notifier.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class Todoview extends StatefulWidget {
   const Todoview({super.key, required this.title});
@@ -9,21 +12,7 @@ class Todoview extends StatefulWidget {
 
 class _TodoviewState extends State<Todoview> {
   String myGoal = "一流のプログラマになる";
-  List _todoList = [];
-  Future<void> getTodoList() async {
-    // final url = Uri.https("api.github.com","users/yabuki829/repos");
-    // final response = await http.get(url);
-    // final List list = json.decode(response.body);
-
-    // final List<Repository> repositories =
-    // list.map((item) => Repository.fromJson(item)).toList();
-    // setState(() {
-    //   _repositories = repositories;
-    // });
-    setState(() {
-      _todoList.add("新しく追加");
-    });
-  }
+  final todoList = todoListNotifierProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -49,20 +38,28 @@ class _TodoviewState extends State<Todoview> {
           ],
         ),
       ),
-      body: _todoList.isEmpty
-          ? const SizedBox.shrink()
-          : ListView.builder(
-              itemCount: _todoList.length,
-              itemBuilder: ((context, index) {
-                return Row(
-                  children: [
-                    Text(_todoList[index]),
-                  ],
-                );
-              }),
-            ),
+      body: Consumer(builder: (context, ref, child) {
+        final todoList = ref.watch(todoListNotifierProvider);
+        return todoList.isEmpty
+            ? const SizedBox.shrink()
+            : ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: todoList.length,
+                itemBuilder: ((context, index) {
+                  return ListTile(
+                    title: TodoItemWidget(todo: todoList[index]),
+                    onTap: () {
+                      final todo = todoList[index];
+                      ref
+                          .read(todoListNotifierProvider.notifier)
+                          .updateTodo(todo.copyWith(isDone: !todo.isDone));
+                    },
+                  );
+                }),
+              );
+      }),
       floatingActionButton: FloatingActionButton(
-        onPressed: getTodoList,
+        onPressed: () {},
         child: const Icon(Icons.add),
       ),
     );

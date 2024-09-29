@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:todoapp/responsive.dart';
-import 'package:todoapp/components/login/LoginMobileView.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -17,10 +16,6 @@ class _LoginViewState extends State<LoginView> {
   String email = '';
   String password = '';
 
-
-
-  
-
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
@@ -30,9 +25,7 @@ class _LoginViewState extends State<LoginView> {
             child: Row(
       children: [
         if (deviceWidth < Responsive.sm.width)
-          ...[
-
-          ]
+          ...[]
         else if (deviceWidth < Responsive.md.width)
           ...[]
         else if (deviceWidth < Responsive.lg.width)

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:todoapp/searvices/ApiCliant.dart';
 import 'package:todoapp/searvices/ApiClient.dart';
 import 'dart:convert';
 
@@ -29,7 +28,6 @@ class ApiAuth {
         final refreshToken = responseData['refresh'];
 
         // トークンを保存して遷移する
-        
 
         context.go('/');
       } else {
