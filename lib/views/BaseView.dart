@@ -14,6 +14,19 @@ class BaseView extends StatefulWidget {
 
 class _BaseViewState extends State<BaseView> {
   int _selectedIndex = 0;
+  void _onDestinationSelected(int index) {
+    setState(() {
+      _selectedIndex = index;
+      switch (_selectedIndex) {
+        case 0:
+          context.go('/');
+        case 1:
+          context.go('/news');
+        case 2:
+          context.go('/settings');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +36,20 @@ class _BaseViewState extends State<BaseView> {
         children: [
           if (deviceWidth >= Responsive.md.width) ...[
             NavigationRail(
-              extended: deviceWidth >= Responsive.lg.width,
+              backgroundColor: Colors.black12,
+              indicatorColor: Colors.white,
+              extended: deviceWidth >= Responsive.xl.width,
               destinations: const <NavigationRailDestination>[
                 NavigationRailDestination(
                   icon: Icon(Icons.home),
-                  label: Text('ホーム'),
+                  label: Text(
+                    'ホーム',
+                    style: TextStyle(fontSize: 24),
+                  ),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.timer_outlined),
+                  label: Text('タイマー'),
                 ),
                 NavigationRailDestination(
                   icon: Icon(Icons.newspaper),
@@ -39,53 +61,29 @@ class _BaseViewState extends State<BaseView> {
                 ),
               ],
               selectedIndex: _selectedIndex,
-              onDestinationSelected: (int index) {
-                setState(
-                  () {
-                    _selectedIndex = index;
-                    switch (_selectedIndex) {
-                      case 0:
-                        context.go('/');
-                      case 1:
-                        context.go("/news");
-                      case 2:
-                        context.go("/settings");
-                    }
-                  },
-                );
-              },
+              onDestinationSelected: _onDestinationSelected,
             ),
           ],
           Expanded(child: widget.child)
         ],
       ),
       bottomNavigationBar: deviceWidth < Responsive.md.width
-          ? BottomNavigationBar(
-              currentIndex: _selectedIndex,
-              selectedItemColor: Colors.blue[800],
-              onTap: (int index) {
-                setState(() {
-                  _selectedIndex = index;
-                  switch (_selectedIndex) {
-                    case 0:
-                      context.go('/');
-                    case 1:
-                      context.go('/news');
-                    case 2:
-                      context.go('/settings');
-                  }
-                });
-              },
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
+          ? NavigationBar(
+              onDestinationSelected: _onDestinationSelected,
+              destinations: const [
+                NavigationDestination(
                   icon: Icon(Icons.home),
                   label: 'ホーム',
                 ),
-                BottomNavigationBarItem(
+                NavigationDestination(
+                  icon: Icon(Icons.timer_outlined),
+                  label: 'タイマー',
+                ),
+                NavigationDestination(
                   icon: Icon(Icons.newspaper),
                   label: 'ニュース',
                 ),
-                BottomNavigationBarItem(
+                NavigationDestination(
                   icon: Icon(Icons.settings),
                   label: '設定',
                 ),
