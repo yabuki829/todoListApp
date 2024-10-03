@@ -21,8 +21,10 @@ class _BaseViewState extends State<BaseView> {
         case 0:
           context.go('/');
         case 1:
-          context.go('/news');
+          context.go('/timer');
         case 2:
+          context.go('/news');
+        case 3:
           context.go('/settings');
       }
     });

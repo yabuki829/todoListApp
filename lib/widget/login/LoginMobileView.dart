@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todoapp/components/login/LoginForm.dart';
-import 'package:todoapp/components/login/LoginTopImageComponent.dart';
+import 'package:todoapp/widget/login/LoginForm.dart';
+import 'package:todoapp/widget/login/LoginTopImageComponent.dart';
 
 class MobileLoginScreen extends StatelessWidget {
   const MobileLoginScreen({

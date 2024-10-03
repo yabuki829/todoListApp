@@ -7,6 +7,7 @@ import 'package:todoapp/views/LoginView.dart';
 import 'package:todoapp/views/NewsView.dart';
 import 'package:todoapp/views/Settings.dart';
 import 'package:todoapp/views/TodoView.dart';
+import 'package:todoapp/views/timer_view.dart';
 
 // 参考:
 // https://github.com/flutter/packages/blob/main/packages/go_router/example/lib/shell_route.dart
@@ -69,6 +70,12 @@ final router = GoRouter(
           name: 'news',
           pageBuilder: (context, state) =>
               buildTransitionPage(child: const NewsVew()),
+        ),
+        GoRoute(
+          path: '/timer',
+          name: 'timer',
+          pageBuilder: (context, state) =>
+              buildTransitionPage(child: TimerView()),
         ),
       ],
     )

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todoapp/components/login/AllredyHaveAccounts.dart';
+import 'package:todoapp/widget/login/AllredyHaveAccounts.dart';
 import 'package:todoapp/searvices/ApiAuth.dart';
 
 class LoginForm extends StatelessWidget {

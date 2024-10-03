@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todoapp/components/TodoItemWidget.dart';
+import 'package:todoapp/widget/TodoItemWidget.dart';
 import 'package:todoapp/notifier/todolist_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
