@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todoapp/animation/noamimation.dart';
+import 'package:todoapp/models/todo/todo.dart';
 import 'package:todoapp/views/BaseView.dart';
 import 'package:todoapp/views/DetailView.dart';
 import 'package:todoapp/views/LoginView.dart';
@@ -48,16 +49,24 @@ final router = GoRouter(
           ),
           routes: [
             GoRoute(
-              path: 'id',
+              path: 'todo/:id',
               name: 'detail',
               pageBuilder: (context, state) {
+                final todo = state.extra as Todo;
                 return MaterialPage(
                   key: state.pageKey,
-                  child: const Detailview(),
+                  child: Detailview(todo: todo),
                 );
               },
             ),
           ],
+        ),
+        GoRoute(
+          path: "/timer",
+          name: "timer",
+          pageBuilder: (context, state) => buildTransitionPage(
+            child: const TimerView(),
+          ),
         ),
         GoRoute(
           path: '/settings',
@@ -71,19 +80,14 @@ final router = GoRouter(
           pageBuilder: (context, state) =>
               buildTransitionPage(child: const NewsVew()),
         ),
-        GoRoute(
-          path: '/timer',
-          name: 'timer',
-          pageBuilder: (context, state) =>
-              buildTransitionPage(child: TimerView()),
-        ),
       ],
     )
   ],
   errorPageBuilder: (context, state) => MaterialPage(
     key: state.pageKey,
-    child: const Scaffold(
-      body: Center(
+    child: Scaffold(
+      appBar: AppBar(title: null),
+      body: const Center(
         child: Text("404"),
       ),
     ),

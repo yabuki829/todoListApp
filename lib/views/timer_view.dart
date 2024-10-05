@@ -94,9 +94,6 @@ class TimerViewState extends State<TimerView> {
                                     color: Colors.white,
                                     fontSize: 48,
                                   ),
-                                  keyboardType:
-                                      const TextInputType.numberWithOptions(
-                                          signed: false, decimal: false),
                                   controller: timeController,
                                   textInputAction: TextInputAction.done,
                                   onSubmitted: (value) {
@@ -109,7 +106,6 @@ class TimerViewState extends State<TimerView> {
                   ),
                 ),
                 const SizedBox(height: 80),
-                // buildButtons()
                 ElevatedButton(
                     onPressed: () {
                       if (isRunning) {
