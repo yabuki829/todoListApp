@@ -77,4 +77,8 @@ class TodoListNotifier extends _$TodoListNotifier {
     state = state.where((todo) => todo.id != id).toList();
     _saveTodos();
   }
+
+  Todo getTodo(int id) {
+    return state.firstWhere((todo) => todo.id == id);
+  }
 }

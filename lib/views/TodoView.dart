@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:todoapp/searvices/ApiAuth.dart';
 import 'package:todoapp/widget/TodoItemWidget.dart';
 import 'package:todoapp/notifier/todolist_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -58,20 +60,16 @@ class _TodoviewState extends State<Todoview> {
                         decoration: const InputDecoration(
                           hintText: "新しいタスクを入力",
                         ),
-                      ),
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          if (_controller.text.isNotEmpty) {
+                        onSubmitted: (value) {
+                          if (value.isNotEmpty) {
                             ref
                                 .read(todoListNotifierProvider.notifier)
-                                .addTodo(_controller.text);
+                                .addTodo(value);
                             _controller.clear();
                           }
                         },
-                        icon: const Icon(
-                          Icons.add_circle_outline_outlined,
-                        ))
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -93,11 +91,12 @@ class _TodoviewState extends State<Todoview> {
                             child: ListTile(
                               title: TodoItemWidget(todo: todoList[index]),
                               onTap: () {
-                                final todo = todoList[index];
-                                ref
-                                    .read(todoListNotifierProvider.notifier)
-                                    .updateTodo(
-                                        todo.copyWith(isDone: !todo.isDone));
+                                if (index < todoList.length) {
+                                  context.go(
+                                    '/todo/${todoList[index].id}',
+                                    extra: todoList[index],
+                                  );
+                                }
                               },
                             ),
                           );
