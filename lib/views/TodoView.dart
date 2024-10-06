@@ -39,7 +39,6 @@ class _TodoviewState extends State<Todoview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: Column(
@@ -108,7 +107,6 @@ class _TodoviewState extends State<Todoview> {
                               title: TodoItemWidget(todo: todoList[index]),
                               onTap: () {
                                 if (index < todoList.length) {
-                                  // 詳細画面のWidgetを表示する
                                   _openDetailTodoView(todoList[index]);
                                 }
                               },

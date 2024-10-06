@@ -17,7 +17,8 @@ class TimerViewState extends State<TimerView> {
   final timeController = TextEditingController();
 
   void startTimer({bool reset = true}) {
-    debugPrint(timeController.text);
+    maxMinutes = int.parse(timeController.text);
+
     isRunning = true;
     if (reset) {
       resetTimer();
@@ -55,72 +56,81 @@ class TimerViewState extends State<TimerView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("集中しよう"),
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        title: const Text(
+          "集中",
+          style: TextStyle(color: Colors.white),
         ),
-        body: Container(
-            width: double.infinity,
-            color: Colors.deepPurpleAccent,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 200,
-                  height: 200,
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      CircularProgressIndicator(
-                        value: 1 - (minutes * 60 + seconds) / (maxMinutes * 60),
-                        valueColor: const AlwaysStoppedAnimation(Colors.white),
-                        strokeWidth: 12,
-                        backgroundColor: Colors.greenAccent,
-                      ),
-                      Center(
-                        child: isRunning
-                            ? Text(
-                                '$minutes:${seconds.toString().padLeft(2, '0')}',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  fontSize: 60,
-                                ),
-                              )
-                            : Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: TextField(
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 48,
-                                  ),
-                                  controller: timeController,
-                                  textInputAction: TextInputAction.done,
-                                  onSubmitted: (value) {
-                                    startTimer();
-                                  },
-                                ),
-                              ),
-                      )
-                    ],
+      ),
+      body: Container(
+        width: double.infinity,
+        color: Colors.deepPurpleAccent,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 200,
+              height: 200,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  CircularProgressIndicator(
+                    value: 1 - (minutes * 60 + seconds) / (maxMinutes * 60),
+                    valueColor: const AlwaysStoppedAnimation(Colors.white),
+                    strokeWidth: 12,
+                    backgroundColor: Colors.greenAccent,
                   ),
-                ),
-                const SizedBox(height: 80),
-                ElevatedButton(
-                    onPressed: () {
-                      if (isRunning) {
-                        stopTimer(reset: true);
-                      } else {
-                        maxMinutes = int.parse(timeController.text);
-                        startTimer();
-                      }
-                    },
+                  Center(
                     child: isRunning
-                        ? const Text("やめる",
-                            style: TextStyle(color: Colors.black))
-                        : const Text("スタート",
-                            style: TextStyle(color: Colors.black)))
-              ],
-            )));
+                        ? Text(
+                            '$minutes:${seconds.toString().padLeft(2, '0')}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 60,
+                            ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 48,
+                              ),
+                              controller: timeController,
+                              textInputAction: TextInputAction.done,
+                              onSubmitted: (value) {
+                                startTimer();
+                              },
+                            ),
+                          ),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(height: 80),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.lightGreen,
+                ),
+                onPressed: () {
+                  if (isRunning) {
+                    stopTimer(reset: true);
+                  } else {
+                    startTimer();
+                  }
+                },
+                child: isRunning
+                    ? const Text("やめる",
+                        style: TextStyle(
+                          color: Colors.black,
+                        ))
+                    : const Text("スタート", style: TextStyle(color: Colors.black)))
+          ],
+        ),
+      ),
+    );
   }
 }

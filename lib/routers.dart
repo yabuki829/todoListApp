@@ -37,7 +37,16 @@ final router = GoRouter(
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
       builder: (BuildContext context, GoRouterState state, Widget child) {
-        return BaseView(child: child);
+        return BaseView(
+          selectedIndex: switch (state.uri.path) {
+            var path when path.startsWith('/timer') => 1,
+            var path when path.startsWith('/news') => 2,
+            var path when path.startsWith('/settings') => 3,
+            var path when path.startsWith('/') => 0,
+            _ => 0,
+          },
+          child: child,
+        );
       },
       routes: [
         GoRoute(

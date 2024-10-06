@@ -40,7 +40,6 @@ class TodoListNotifier extends _$TodoListNotifier {
     final prefs = await SharedPreferences.getInstance();
     final todosJson = jsonEncode(state.map((todo) => todo.toJson()).toList());
     await prefs.setString('todos', todosJson);
-    print(todosJson);
   }
 
   Future<void> addTodo(String title) async {
