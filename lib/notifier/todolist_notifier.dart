@@ -4,7 +4,6 @@ import 'package:todoapp/models/todo/todo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'dart:math';
-import 'package:todoapp/models/user/user.dart';
 
 part 'todolist_notifier.g.dart';
 

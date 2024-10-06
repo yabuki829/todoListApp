@@ -24,8 +24,7 @@ mixin _$Todo {
   String get title => throw _privateConstructorUsedError;
   bool get isDone => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
-  DateTime get deadline =>
-      throw _privateConstructorUsedError; // required User user,
+  DateTime get deadline => throw _privateConstructorUsedError;
   List<Comment> get comments => throw _privateConstructorUsedError;
   int get priority => throw _privateConstructorUsedError;
 
@@ -205,9 +204,7 @@ class _$TodoImpl implements _Todo {
   final DateTime createdAt;
   @override
   final DateTime deadline;
-// required User user,
   final List<Comment> _comments;
-// required User user,
   @override
   List<Comment> get comments {
     if (_comments is EqualUnmodifiableListView) return _comments;
@@ -283,7 +280,7 @@ abstract class _Todo implements Todo {
   @override
   DateTime get createdAt;
   @override
-  DateTime get deadline; // required User user,
+  DateTime get deadline;
   @override
   List<Comment> get comments;
   @override

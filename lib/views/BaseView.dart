@@ -34,7 +34,6 @@ class _BaseViewState extends State<BaseView> {
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: Row(
         children: [
           if (deviceWidth >= Responsive.md.width) ...[
