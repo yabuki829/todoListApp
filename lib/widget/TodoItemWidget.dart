@@ -17,7 +17,12 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
         widget.todo.isDone
             ? const Icon(Icons.check_box_outlined)
             : const Icon(Icons.check_box_outline_blank),
-        Text(widget.todo.title),
+        Column(
+          children: [
+            Text(widget.todo.title),
+            Text(widget.todo.id),
+          ],
+        )
       ],
     );
   }

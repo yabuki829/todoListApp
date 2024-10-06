@@ -7,11 +7,15 @@ part of 'todo.dart';
 // **************************************************************************
 
 _$TodoImpl _$$TodoImplFromJson(Map<String, dynamic> json) => _$TodoImpl(
-      id: (json['id'] as num).toInt(),
+      id: json['id'] as String,
       title: json['title'] as String,
       isDone: json['isDone'] as bool,
-      user: User.fromJson(json['user'] as Map<String, dynamic>),
-      isPremium: json['isPremium'] as bool? ?? false,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      deadline: DateTime.parse(json['deadline'] as String),
+      comments: (json['comments'] as List<dynamic>)
+          .map((e) => Comment.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      priority: (json['priority'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$$TodoImplToJson(_$TodoImpl instance) =>
@@ -19,6 +23,8 @@ Map<String, dynamic> _$$TodoImplToJson(_$TodoImpl instance) =>
       'id': instance.id,
       'title': instance.title,
       'isDone': instance.isDone,
-      'user': instance.user,
-      'isPremium': instance.isPremium,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'deadline': instance.deadline.toIso8601String(),
+      'comments': instance.comments,
+      'priority': instance.priority,
     };
