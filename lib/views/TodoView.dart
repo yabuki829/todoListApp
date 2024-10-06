@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:todoapp/searvices/ApiAuth.dart';
+import 'package:todoapp/models/todo/todo.dart';
+import 'package:todoapp/views/detail_todo_view.dart';
 import 'package:todoapp/widget/TodoItemWidget.dart';
 import 'package:todoapp/notifier/todolist_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,9 +22,24 @@ class _TodoviewState extends State<Todoview> {
     super.dispose();
   }
 
+  void _openDetailTodoView(Todo todo) {
+    showModalBottomSheet(
+      isDismissible: true,
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return FractionallySizedBox(
+          heightFactor: 0.8,
+          child: DetailTodoView(todoId: todo.id.toString()),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: Column(
@@ -92,10 +108,8 @@ class _TodoviewState extends State<Todoview> {
                               title: TodoItemWidget(todo: todoList[index]),
                               onTap: () {
                                 if (index < todoList.length) {
-                                  context.go(
-                                    '/todo/${todoList[index].id}',
-                                    extra: todoList[index],
-                                  );
+                                  // 詳細画面のWidgetを表示する
+                                  _openDetailTodoView(todoList[index]);
                                 }
                               },
                             ),
@@ -106,10 +120,6 @@ class _TodoviewState extends State<Todoview> {
             ],
           );
         },
-        // ),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () {},
-        //   child: const Icon(Icons.add),
       ),
     );
   }

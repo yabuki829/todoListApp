@@ -20,11 +20,14 @@ Todo _$TodoFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Todo {
-  int get id => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   bool get isDone => throw _privateConstructorUsedError;
-  User get user => throw _privateConstructorUsedError;
-  bool get isPremium => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get deadline =>
+      throw _privateConstructorUsedError; // required User user,
+  List<Comment> get comments => throw _privateConstructorUsedError;
+  int get priority => throw _privateConstructorUsedError;
 
   /// Serializes this Todo to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,9 +43,14 @@ abstract class $TodoCopyWith<$Res> {
   factory $TodoCopyWith(Todo value, $Res Function(Todo) then) =
       _$TodoCopyWithImpl<$Res, Todo>;
   @useResult
-  $Res call({int id, String title, bool isDone, User user, bool isPremium});
-
-  $UserCopyWith<$Res> get user;
+  $Res call(
+      {String id,
+      String title,
+      bool isDone,
+      DateTime createdAt,
+      DateTime deadline,
+      List<Comment> comments,
+      int priority});
 }
 
 /// @nodoc
@@ -63,14 +71,16 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
     Object? id = null,
     Object? title = null,
     Object? isDone = null,
-    Object? user = null,
-    Object? isPremium = null,
+    Object? createdAt = null,
+    Object? deadline = null,
+    Object? comments = null,
+    Object? priority = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -79,25 +89,23 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
           ? _value.isDone
           : isDone // ignore: cast_nullable_to_non_nullable
               as bool,
-      user: null == user
-          ? _value.user
-          : user // ignore: cast_nullable_to_non_nullable
-              as User,
-      isPremium: null == isPremium
-          ? _value.isPremium
-          : isPremium // ignore: cast_nullable_to_non_nullable
-              as bool,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      deadline: null == deadline
+          ? _value.deadline
+          : deadline // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      comments: null == comments
+          ? _value.comments
+          : comments // ignore: cast_nullable_to_non_nullable
+              as List<Comment>,
+      priority: null == priority
+          ? _value.priority
+          : priority // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
-  }
-
-  /// Create a copy of Todo
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $UserCopyWith<$Res> get user {
-    return $UserCopyWith<$Res>(_value.user, (value) {
-      return _then(_value.copyWith(user: value) as $Val);
-    });
   }
 }
 
@@ -108,10 +116,14 @@ abstract class _$$TodoImplCopyWith<$Res> implements $TodoCopyWith<$Res> {
       __$$TodoImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String title, bool isDone, User user, bool isPremium});
-
-  @override
-  $UserCopyWith<$Res> get user;
+  $Res call(
+      {String id,
+      String title,
+      bool isDone,
+      DateTime createdAt,
+      DateTime deadline,
+      List<Comment> comments,
+      int priority});
 }
 
 /// @nodoc
@@ -129,14 +141,16 @@ class __$$TodoImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? isDone = null,
-    Object? user = null,
-    Object? isPremium = null,
+    Object? createdAt = null,
+    Object? deadline = null,
+    Object? comments = null,
+    Object? priority = null,
   }) {
     return _then(_$TodoImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -145,14 +159,22 @@ class __$$TodoImplCopyWithImpl<$Res>
           ? _value.isDone
           : isDone // ignore: cast_nullable_to_non_nullable
               as bool,
-      user: null == user
-          ? _value.user
-          : user // ignore: cast_nullable_to_non_nullable
-              as User,
-      isPremium: null == isPremium
-          ? _value.isPremium
-          : isPremium // ignore: cast_nullable_to_non_nullable
-              as bool,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      deadline: null == deadline
+          ? _value.deadline
+          : deadline // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      comments: null == comments
+          ? _value._comments
+          : comments // ignore: cast_nullable_to_non_nullable
+              as List<Comment>,
+      priority: null == priority
+          ? _value.priority
+          : priority // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -164,27 +186,42 @@ class _$TodoImpl implements _Todo {
       {required this.id,
       required this.title,
       required this.isDone,
-      required this.user,
-      this.isPremium = false});
+      required this.createdAt,
+      required this.deadline,
+      required final List<Comment> comments,
+      this.priority = 0})
+      : _comments = comments;
 
   factory _$TodoImpl.fromJson(Map<String, dynamic> json) =>
       _$$TodoImplFromJson(json);
 
   @override
-  final int id;
+  final String id;
   @override
   final String title;
   @override
   final bool isDone;
   @override
-  final User user;
+  final DateTime createdAt;
+  @override
+  final DateTime deadline;
+// required User user,
+  final List<Comment> _comments;
+// required User user,
+  @override
+  List<Comment> get comments {
+    if (_comments is EqualUnmodifiableListView) return _comments;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_comments);
+  }
+
   @override
   @JsonKey()
-  final bool isPremium;
+  final int priority;
 
   @override
   String toString() {
-    return 'Todo(id: $id, title: $title, isDone: $isDone, user: $user, isPremium: $isPremium)';
+    return 'Todo(id: $id, title: $title, isDone: $isDone, createdAt: $createdAt, deadline: $deadline, comments: $comments, priority: $priority)';
   }
 
   @override
@@ -195,15 +232,19 @@ class _$TodoImpl implements _Todo {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.isDone, isDone) || other.isDone == isDone) &&
-            (identical(other.user, user) || other.user == user) &&
-            (identical(other.isPremium, isPremium) ||
-                other.isPremium == isPremium));
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.deadline, deadline) ||
+                other.deadline == deadline) &&
+            const DeepCollectionEquality().equals(other._comments, _comments) &&
+            (identical(other.priority, priority) ||
+                other.priority == priority));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, title, isDone, user, isPremium);
+  int get hashCode => Object.hash(runtimeType, id, title, isDone, createdAt,
+      deadline, const DeepCollectionEquality().hash(_comments), priority);
 
   /// Create a copy of Todo
   /// with the given fields replaced by the non-null parameter values.
@@ -223,24 +264,30 @@ class _$TodoImpl implements _Todo {
 
 abstract class _Todo implements Todo {
   const factory _Todo(
-      {required final int id,
+      {required final String id,
       required final String title,
       required final bool isDone,
-      required final User user,
-      final bool isPremium}) = _$TodoImpl;
+      required final DateTime createdAt,
+      required final DateTime deadline,
+      required final List<Comment> comments,
+      final int priority}) = _$TodoImpl;
 
   factory _Todo.fromJson(Map<String, dynamic> json) = _$TodoImpl.fromJson;
 
   @override
-  int get id;
+  String get id;
   @override
   String get title;
   @override
   bool get isDone;
   @override
-  User get user;
+  DateTime get createdAt;
   @override
-  bool get isPremium;
+  DateTime get deadline; // required User user,
+  @override
+  List<Comment> get comments;
+  @override
+  int get priority;
 
   /// Create a copy of Todo
   /// with the given fields replaced by the non-null parameter values.
