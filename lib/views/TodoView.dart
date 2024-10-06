@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:todoapp/models/todo/todo.dart';
 import 'package:todoapp/views/detail_todo_view.dart';
 import 'package:todoapp/widget/TodoItemWidget.dart';
 import 'package:todoapp/notifier/todolist_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todoapp/widget/add_task_dialog.dart';
 
 class Todoview extends StatefulWidget {
   const Todoview({super.key, required this.title});
@@ -31,6 +31,20 @@ class _TodoviewState extends State<Todoview> {
         return FractionallySizedBox(
           heightFactor: 0.8,
           child: DetailTodoView(todoId: todo.id.toString()),
+        );
+      },
+    );
+  }
+
+  void _openAddTodoView() {
+    showModalBottomSheet(
+      isDismissible: true,
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return const FractionallySizedBox(
+          heightFactor: 0.8,
+          child: AddTaskView(),
         );
       },
     );
@@ -118,6 +132,14 @@ class _TodoviewState extends State<Todoview> {
             ],
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _openAddTodoView();
+        },
+        child: const Icon(
+          Icons.add,
+        ),
       ),
     );
   }
