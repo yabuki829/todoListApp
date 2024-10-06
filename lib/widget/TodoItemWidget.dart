@@ -20,7 +20,6 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
         Column(
           children: [
             Text(widget.todo.title),
-            Text(widget.todo.id),
           ],
         )
       ],

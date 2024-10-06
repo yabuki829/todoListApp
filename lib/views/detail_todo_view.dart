@@ -35,7 +35,7 @@ class _DetailTodoViewState extends State<DetailTodoView> {
               ),
               Text(todo.deadline.toString()),
               TextField(
-                // controller: _controller,
+                controller: _controller,
                 decoration: const InputDecoration(
                   hintText: "新しいコメントを入力",
                 ),
