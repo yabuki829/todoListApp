@@ -91,9 +91,8 @@ class _TodoviewState extends State<Todoview> {
                         ),
                         onSubmitted: (value) {
                           if (value.isNotEmpty) {
-                            ref
-                                .read(todoListNotifierProvider.notifier)
-                                .addTodo(value);
+                            ref.read(todoListNotifierProvider.notifier).addTodo(
+                                title: value, deadline: DateTime.now());
                             _controller.clear();
                           }
                         },
@@ -114,7 +113,7 @@ class _TodoviewState extends State<Todoview> {
                             onDismissed: (direction) {
                               ref
                                   .read(todoListNotifierProvider.notifier)
-                                  .deleteTodo(todoList[index].id);
+                                  .deleteTodo(id: todoList[index].id);
                             },
                             background: Container(color: Colors.red),
                             child: ListTile(

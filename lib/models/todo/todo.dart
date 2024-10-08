@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:todoapp/models/comment/comment.dart';
-import 'package:todoapp/models/user/user.dart';
 
 part "todo.freezed.dart";
 part "todo.g.dart";

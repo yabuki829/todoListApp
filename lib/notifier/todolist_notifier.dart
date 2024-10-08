@@ -1,3 +1,4 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:todoapp/models/comment/comment.dart';
 import 'package:todoapp/models/todo/todo.dart';
@@ -42,20 +43,21 @@ class TodoListNotifier extends _$TodoListNotifier {
     await prefs.setString('todos', todosJson);
   }
 
-  Future<void> addTodo(String title) async {
+  Future<void> addTodo(
+      {required String title, required DateTime deadline}) async {
     final newTodo = Todo(
       id: generateNonce(),
       title: title,
       isDone: false,
       createdAt: DateTime.now(),
-      deadline: DateTime.now(),
+      deadline: deadline,
       comments: [],
     );
     state = [...state, newTodo];
     _saveTodos();
   }
 
-  void updateTodo(Todo updatedTodo) {
+  void updateTodo({required Todo updatedTodo}) {
     state = [
       for (final todo in state)
         if (todo.id == updatedTodo.id) updatedTodo else todo
@@ -63,7 +65,7 @@ class TodoListNotifier extends _$TodoListNotifier {
     _saveTodos();
   }
 
-  void deleteTodo(String id) {
+  void deleteTodo({required String id}) {
     state = state.where((todo) => todo.id != id).toList();
     _saveTodos();
   }
@@ -74,7 +76,7 @@ class TodoListNotifier extends _$TodoListNotifier {
     return state.firstWhere((todo) => todo.id == id);
   }
 
-  void addComment(String todoId, String commentText) {
+  void addComment({required String todoId, required String commentText}) {
     final newComment = Comment(
       id: generateNonce(),
       text: commentText,
@@ -90,7 +92,7 @@ class TodoListNotifier extends _$TodoListNotifier {
     _saveTodos();
   }
 
-  void deleteComment(String todoId, String commentId) {
+  void deleteComment({required String todoId, required String commentId}) {
     state = [
       for (final todo in state)
         if (todo.id == todoId)
