@@ -42,7 +42,7 @@ class _DetailTodoViewState extends State<DetailTodoView> {
                 onSubmitted: (value) {
                   ref
                       .watch(todoListNotifierProvider.notifier)
-                      .addComment(todo.id, value);
+                      .addComment(todoId: todo.id, commentText: value);
                   _controller.clear();
                 },
               ),
@@ -61,7 +61,8 @@ class _DetailTodoViewState extends State<DetailTodoView> {
                                 ref
                                     .watch(todoListNotifierProvider.notifier)
                                     .deleteComment(
-                                        todo.id, todo.comments[index].id);
+                                      todoId: 
+                                        todo.id,commentId:  todo.comments[index].id);
                               },
                               icon: const Icon(Icons.delete),
                             ),

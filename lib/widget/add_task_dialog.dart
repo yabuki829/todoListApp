@@ -1,6 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:todoapp/notifier/todolist_notifier.dart'; // DateFormatのためにインポート
 
 class AddTaskView extends StatefulWidget {
   const AddTaskView({super.key});
@@ -10,46 +11,109 @@ class AddTaskView extends StatefulWidget {
 }
 
 class _AddTaskViewState extends State<AddTaskView> {
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _dateTimeController = TextEditingController();
+  DateTime? _selectedDateTime;
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _dateTimeController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _selectDateTime(BuildContext context) async {
+    // 日付選択した後に時間を選択する
+    // TODO:別の方法わかったら修正する
+
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _selectedDateTime ?? DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+    );
+    if (pickedDate != null && context.mounted) {
+      final TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime:
+            TimeOfDay.fromDateTime(_selectedDateTime ?? DateTime.now()),
+      );
+      if (pickedTime != null) {
+        setState(() {
+          _selectedDateTime = DateTime(
+            pickedDate.year,
+            pickedDate.month,
+            pickedDate.day,
+            pickedTime.hour,
+            pickedTime.minute,
+          );
+          _dateTimeController.text =
+              DateFormat('yyyy年MM月dd日 HH:mm').format(_selectedDateTime!);
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final controller = TextEditingController();
-    final dateController = TextEditingController();
     return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('タスクを追加'),
-            actions: [TextButton(onPressed: () {}, child: const Text("追加"))],
-          ),
-          body: Consumer(
-            builder: (context, ref, _) {
-              return Column(
-                children: [
-                  TextField(
-                    controller: controller,
+      padding: const EdgeInsets.all(8.0),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: const Text('タスクを追加'),
+        ),
+        body: Consumer(
+          builder: (context, ref, _) {
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _titleController,
                     decoration: const InputDecoration(
                       hintText: 'タイトルを入力',
                     ),
                   ),
-                  TextField(
-                    controller: dateController,
-                    keyboardType: TextInputType.datetime,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _dateTimeController,
+                    readOnly: true,
                     decoration: const InputDecoration(
-                      hintText: '締め切りを入力',
+                      hintText: '締め切りを選択',
+                      suffixIcon: Icon(Icons.calendar_today),
                     ),
-                    onTap: () {
-                      showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime.now().add(const Duration(days: 365)),
-                      );
-                    },
+                    onTap: () => _selectDateTime(context),
                   ),
-                ],
-              );
-            },
-          ),
-        ));
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    ref
+                        .read(todoListNotifierProvider.notifier)
+                        .addTodo(
+                          title: _titleController.text,
+                          deadline: _selectedDateTime!,
+                        )
+                        .then(
+                      (value) {
+                        const snackBar = SnackBar(
+                          content: Text("タスクを追加しました"),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                        Navigator.of(context).pop();
+                      },
+                    );
+                  },
+                  child: const Text('追加'),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+    );
   }
 }
