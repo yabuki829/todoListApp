@@ -58,61 +58,55 @@ class _AddTaskViewState extends State<AddTaskView> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: const Text('タスクを追加'),
-        ),
-        body: Consumer(
-          builder: (context, ref, _) {
-            return Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: _titleController,
-                    decoration: const InputDecoration(
-                      hintText: 'タイトルを入力',
-                    ),
+      child: Consumer(
+        builder: (context, ref, _) {
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: _titleController,
+                  decoration: const InputDecoration(
+                    hintText: 'タイトルを入力',
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: _dateTimeController,
-                    readOnly: true,
-                    decoration: const InputDecoration(
-                      hintText: '締め切りを選択',
-                      suffixIcon: Icon(Icons.calendar_today),
-                    ),
-                    onTap: () => _selectDateTime(context),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: _dateTimeController,
+                  readOnly: true,
+                  decoration: const InputDecoration(
+                    hintText: '締め切りを選択',
+                    suffixIcon: Icon(Icons.calendar_today),
                   ),
+                  onTap: () => _selectDateTime(context),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    ref
-                        .read(todoListNotifierProvider.notifier)
-                        .addTodo(
-                          title: _titleController.text,
-                          deadline: _selectedDateTime!,
-                        )
-                        .then(
-                      (value) {
-                        const snackBar = SnackBar(
-                          content: Text("タスクを追加しました"),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  ref
+                      .read(todoListNotifierProvider.notifier)
+                      .addTodo(
+                        title: _titleController.text,
+                        deadline: _selectedDateTime!,
+                      )
+                      .then(
+                    (value) {
+                      const snackBar = SnackBar(
+                        content: Text("タスクを追加しました"),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-                        Navigator.of(context).pop();
-                      },
-                    );
-                  },
-                  child: const Text('追加'),
-                ),
-              ],
-            );
-          },
-        ),
+                      Navigator.of(context).pop();
+                    },
+                  );
+                },
+                child: const Text('追加'),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

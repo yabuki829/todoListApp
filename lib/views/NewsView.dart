@@ -10,18 +10,15 @@ class NewsVew extends StatefulWidget {
 class _NewsVewState extends State<NewsVew> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: const Text(
-          "お知らせ",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
+    return const CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          title: Text('ニュース'),
         ),
-      ),
-      body: const Text("rest"),
+        // SliverToBoxAdapter(
+        //   child: Text('ニュース'),
+        // )
+      ],
     );
   }
 }

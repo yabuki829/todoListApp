@@ -2,13 +2,15 @@ import 'package:intl/intl.dart';
 
 class DateFormater {
   static String format(DateTime date) {
-    if (date.year == DateTime.now().year) {
-      if (date.month == DateTime.now().month) {
-        return DateFormat('M月d日HH時mm分').format(date);
-      }
-      return DateFormat('M月d日HH時mm分').format(date);
-    }
     return DateFormat('yyyy年M月d日HH時mm分').format(date);
+
+    // if (date.year == DateTime.now().year) {
+    //   if (date.month == DateTime.now().month) {
+    //     return DateFormat('M月d日HH時mm分').format(date);
+    //   }
+    //   return DateFormat('M月d日HH時mm分').format(date);
+    // }
+    // return DateFormat('yyyy年M月d日HH時mm分').format(date);
   }
 
   static String formatHowManyDays(DateTime date) {

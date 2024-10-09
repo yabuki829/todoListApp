@@ -33,7 +33,8 @@ class _DetailTodoViewState extends State<DetailTodoView> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(todo.deadline.toString()),
+              Text(DateFormater.formatHowManyDays(todo.deadline)),
+              Text(DateFormater.format(todo.deadline)),
               TextField(
                 controller: _controller,
                 decoration: const InputDecoration(
@@ -61,8 +62,8 @@ class _DetailTodoViewState extends State<DetailTodoView> {
                                 ref
                                     .watch(todoListNotifierProvider.notifier)
                                     .deleteComment(
-                                      todoId: 
-                                        todo.id,commentId:  todo.comments[index].id);
+                                        todoId: todo.id,
+                                        commentId: todo.comments[index].id);
                               },
                               icon: const Icon(Icons.delete),
                             ),

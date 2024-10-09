@@ -52,94 +52,63 @@ class _TodoviewState extends State<Todoview> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: Column(
-          children: [
-            Text(
-              widget.title,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            Text(
-              myGoal,
-              style: const TextStyle(
-                fontSize: 12,
-                color: Colors.white,
-              ),
-            )
-          ],
-        ),
-      ),
-      body: Consumer(
-        builder: (context, ref, child) {
-          final todoList = ref.watch(todoListNotifierProvider);
-          return Column(
+    String myGoal = "一流のプログラマになる";
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          title: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _controller,
-                        decoration: const InputDecoration(
-                          hintText: "新しいタスクを入力",
-                        ),
-                        onSubmitted: (value) {
-                          if (value.isNotEmpty) {
-                            ref.read(todoListNotifierProvider.notifier).addTodo(
-                                title: value, deadline: DateTime.now());
-                            _controller.clear();
-                          }
-                        },
-                      ),
-                    ),
-                  ],
+              Text(
+                widget.title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
-              Expanded(
-                child: todoList.isEmpty
-                    ? const Center(child: Text('タスクがありません'))
-                    : ListView.builder(
-                        padding: const EdgeInsets.all(16),
-                        itemCount: todoList.length,
-                        itemBuilder: ((context, index) {
-                          return Dismissible(
-                            key: Key(todoList[index].id.toString()),
-                            onDismissed: (direction) {
-                              ref
-                                  .read(todoListNotifierProvider.notifier)
-                                  .deleteTodo(id: todoList[index].id);
-                            },
-                            background: Container(color: Colors.red),
-                            child: ListTile(
-                              title: TodoItemWidget(todo: todoList[index]),
-                              onTap: () {
-                                if (index < todoList.length) {
-                                  _openDetailTodoView(todoList[index]);
-                                }
-                              },
-                            ),
-                          );
-                        }),
-                      ),
-              ),
+              Text(
+                myGoal,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.white,
+                ),
+              )
             ],
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _openAddTodoView();
-        },
-        child: const Icon(
-          Icons.add,
+          ),
         ),
-      ),
+        Consumer(
+          builder: (context, ref, child) {
+            final todoList = ref.watch(todoListNotifierProvider);
+            return todoList.isEmpty
+                ? const SliverFillRemaining(
+                    child: Center(child: Text('タスクがありません')),
+                  )
+                : SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        return Dismissible(
+                          key: Key(todoList[index].id.toString()),
+                          onDismissed: (direction) {
+                            ref
+                                .read(todoListNotifierProvider.notifier)
+                                .deleteTodo(id: todoList[index].id);
+                          },
+                          background: Container(color: Colors.red),
+                          child: ListTile(
+                            title: TodoItemWidget(todo: todoList[index]),
+                            onTap: () {
+                              if (index < todoList.length) {
+                                _openDetailTodoView(todoList[index]);
+                              }
+                            },
+                          ),
+                        );
+                      },
+                      childCount: todoList.length,
+                    ),
+                  );
+          },
+        ),
+      ],
     );
   }
 }
