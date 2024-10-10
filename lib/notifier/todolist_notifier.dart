@@ -65,7 +65,9 @@ class TodoListNotifier extends _$TodoListNotifier {
     _saveTodos();
   }
 
-  void deleteTodo({required String id}) {
+  void deleteTodo({
+    required String id,
+  }) {
     state = state.where((todo) => todo.id != id).toList();
     _saveTodos();
   }

@@ -37,15 +37,10 @@ class _TodoviewState extends State<Todoview> {
   }
 
   void _openAddTodoView() {
-    showModalBottomSheet(
-      isDismissible: true,
-      isScrollControlled: true,
+    showDialog(
       context: context,
       builder: (BuildContext context) {
-        return const FractionallySizedBox(
-          heightFactor: 0.8,
-          child: AddTaskView(),
-        );
+        return const AddTaskDialog();
       },
     );
   }
@@ -74,6 +69,14 @@ class _TodoviewState extends State<Todoview> {
               )
             ],
           ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                _openAddTodoView();
+              },
+              icon: const Icon(Icons.add),
+            )
+          ],
         ),
         Consumer(
           builder: (context, ref, child) {
@@ -85,22 +88,13 @@ class _TodoviewState extends State<Todoview> {
                 : SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
-                        return Dismissible(
-                          key: Key(todoList[index].id.toString()),
-                          onDismissed: (direction) {
-                            ref
-                                .read(todoListNotifierProvider.notifier)
-                                .deleteTodo(id: todoList[index].id);
+                        return ListTile(
+                          title: TodoItemWidget(todo: todoList[index]),
+                          onTap: () {
+                            if (index < todoList.length) {
+                              _openDetailTodoView(todoList[index]);
+                            }
                           },
-                          background: Container(color: Colors.red),
-                          child: ListTile(
-                            title: TodoItemWidget(todo: todoList[index]),
-                            onTap: () {
-                              if (index < todoList.length) {
-                                _openDetailTodoView(todoList[index]);
-                              }
-                            },
-                          ),
                         );
                       },
                       childCount: todoList.length,
