@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:todoapp/notifier/tab_notifier.dart';
 import 'package:todoapp/notifier/todolist_notifier.dart'; // DateFormatのためにインポート
 
 class AddTaskDialog extends StatefulWidget {
-  const AddTaskDialog({super.key});
+  final String tabId;
+  const AddTaskDialog({super.key, required this.tabId});
 
   @override
   State<AddTaskDialog> createState() => _AddTaskDialogState();
@@ -91,7 +93,8 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
             return ElevatedButton(
               onPressed: () {
                 if (_titleController.text.isNotEmpty) {
-                  ref.read(todoListNotifierProvider.notifier).addTodo(
+                  ref.read(tabNotifierProvider.notifier).addTodo(
+                        tabId: widget.tabId,
                         title: _titleController.text,
                         deadline: _selectedDateTime,
                       );

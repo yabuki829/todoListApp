@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todoapp/animation/noamimation.dart';
-import 'package:todoapp/views/BaseView.dart';
+import 'package:todoapp/BaseView.dart';
 import 'package:todoapp/views/LoginView.dart';
 import 'package:todoapp/views/NewsView.dart';
 import 'package:todoapp/views/Settings.dart';
