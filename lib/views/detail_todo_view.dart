@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todoapp/notifier/todolist_notifier.dart';
+import 'package:todoapp/notifier/tab_notifier.dart';
 import 'package:todoapp/utils/date_format.dart';
 
 class DetailTodoView extends ConsumerStatefulWidget {
-  const DetailTodoView({super.key, required this.todoId});
+  const DetailTodoView({super.key, required this.todoId, required this.tabId});
 
   final String todoId;
-
+  final String tabId;
   @override
   ConsumerState<DetailTodoView> createState() => _DetailTodoViewState();
 }
@@ -17,8 +17,10 @@ class _DetailTodoViewState extends ConsumerState<DetailTodoView> {
 
   @override
   Widget build(BuildContext context) {
-    final todoList = ref.watch(todoListNotifierProvider);
-    final todo = todoList.firstWhere((element) => element.id == widget.todoId);
+    final todo = ref.watch(tabNotifierProvider.notifier).getTodo(
+          tabId: widget.tabId,
+          todoId: widget.todoId,
+        );
 
     return CustomScrollView(
       slivers: [
@@ -53,10 +55,10 @@ class _DetailTodoViewState extends ConsumerState<DetailTodoView> {
                   hintText: "新しいコメントを入力",
                 ),
                 onSubmitted: (value) {
-                  ref
-                      .read(todoListNotifierProvider.notifier)
-                      .addComment(todoId: todo.id, commentText: value);
-                  _controller.clear();
+                  // ref
+                  //     .read(todoListNotifierProvider.notifier)
+                  //     .addComment(todoId: todo.id, commentText: value);
+                  // _controller.clear();
                 },
               ),
             ),
@@ -71,8 +73,8 @@ class _DetailTodoViewState extends ConsumerState<DetailTodoView> {
                 trailing: IconButton(
                   onPressed: () {
                     print("削除します");
-                    ref.read(todoListNotifierProvider.notifier).deleteComment(
-                        todoId: todo.id, commentId: todo.comments[index].id);
+                    // ref.read(todoListNotifierProvider.notifier).deleteComment(
+                    //     todoId: todo.id, commentId: todo.comments[index].id);
                   },
                   icon: const Icon(Icons.delete),
                 ),

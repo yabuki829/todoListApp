@@ -22,6 +22,7 @@ class TabNotifier extends _$TabNotifier {
   @override
   List<TabTodo> build() {
     _loadTabs();
+    // return const [TabTodo(id: "", title: "タイトル", todos: [])];
     return [];
   }
 
@@ -48,8 +49,6 @@ class TabNotifier extends _$TabNotifier {
 
     state = [...state, newTab];
 
-    print("タブを保存します");
-    print(state);
     _saveTabs();
   }
 
@@ -60,7 +59,7 @@ class TabNotifier extends _$TabNotifier {
   }
 
   // Todosの取得
-  Future<TabTodo> getTodo(
+  Future<TabTodo> getTabTodo(
       {required String tabId, required String todoId}) async {
     _loadTabs();
     var findTab = const TabTodo(id: "", title: "", todos: []);
@@ -73,41 +72,71 @@ class TabNotifier extends _$TabNotifier {
     return findTab;
   }
 
+  Todo getTodo({required String tabId, required String todoId}) {
+    _loadTabs();
+    for (TabTodo tab in state) {
+      if (tab.id == tabId) {
+        for (Todo todo in tab.todos) {
+          if (todo.id == todoId) {
+            return todo;
+          }
+        }
+        break;
+      }
+    }
+    return Todo(
+        id: "",
+        title: "",
+        isDone: false,
+        createdAt: DateTime.now(),
+        deadline: DateTime.now(),
+        comments: const []);
+  }
+
   // Todoの削除
   Future<void> deleteTodo(
       {required String tabId, required String todoId}) async {
     _loadTabs();
-    for (TabTodo tab in state) {
+    print("Todoを削除します1");
+    state = state.map((tab) {
       if (tab.id == tabId) {
-        tab.todos.where((todo) => todo.id != todoId).toList();
-        _saveTabs();
-        break;
+        print("見つかりました。");
+        print(tab.title);
+        print(tab.todos.where((todo) => todo.id == todoId).toList());
+        return tab.copyWith(
+            todos: tab.todos.where((todo) => todo.id != todoId).toList());
       }
-    }
-
-    // Todoの追加
+      return tab;
+    }).toList();
+    _saveTabs();
+    print("Todoを削除完了");
   }
 
+  // Todoの追加
   Future<void> addTodo(
       {required String tabId,
       required String title,
       required DateTime deadline}) async {
-    for (int i = 0; i < state.length; i++) {
-      if (state[i].id == tabId) {
-        final todo = Todo(
-            id: generateNonce(),
-            title: title,
-            isDone: false,
-            createdAt: DateTime.now(),
-            deadline: deadline,
-            comments: []);
-        state[i].todos.add(todo);
+    List<TabTodo> updatedState = List.from(state);
 
-        _saveTabs();
-        break;
-      }
+    int tabIndex = updatedState.indexWhere((tab) => tab.id == tabId);
+
+    if (tabIndex != -1) {
+      final todo = Todo(
+          id: generateNonce(),
+          title: title,
+          isDone: false,
+          createdAt: DateTime.now(),
+          deadline: deadline,
+          comments: []);
+
+      updatedState[tabIndex] = updatedState[tabIndex]
+          .copyWith(todos: [...updatedState[tabIndex].todos, todo]);
+
+      state = updatedState;
+
+      _saveTabs();
     }
-    //
   }
 
   void deleteTab(String tabId) {

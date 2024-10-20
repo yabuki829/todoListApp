@@ -22,7 +22,6 @@ User _$UserFromJson(Map<String, dynamic> json) {
 mixin _$User {
   int get id => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
-  bool get isPremium => throw _privateConstructorUsedError;
 
   /// Serializes this User to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -38,7 +37,7 @@ abstract class $UserCopyWith<$Res> {
   factory $UserCopyWith(User value, $Res Function(User) then) =
       _$UserCopyWithImpl<$Res, User>;
   @useResult
-  $Res call({int id, String username, bool isPremium});
+  $Res call({int id, String username});
 }
 
 /// @nodoc
@@ -58,7 +57,6 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   $Res call({
     Object? id = null,
     Object? username = null,
-    Object? isPremium = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -69,10 +67,6 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
-      isPremium: null == isPremium
-          ? _value.isPremium
-          : isPremium // ignore: cast_nullable_to_non_nullable
-              as bool,
     ) as $Val);
   }
 }
@@ -84,7 +78,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       __$$UserImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String username, bool isPremium});
+  $Res call({int id, String username});
 }
 
 /// @nodoc
@@ -101,7 +95,6 @@ class __$$UserImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? username = null,
-    Object? isPremium = null,
   }) {
     return _then(_$UserImpl(
       id: null == id
@@ -112,10 +105,6 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
-      isPremium: null == isPremium
-          ? _value.isPremium
-          : isPremium // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
@@ -123,8 +112,7 @@ class __$$UserImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$UserImpl implements _User {
-  const _$UserImpl(
-      {required this.id, required this.username, this.isPremium = false});
+  const _$UserImpl({required this.id, required this.username});
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
@@ -133,13 +121,10 @@ class _$UserImpl implements _User {
   final int id;
   @override
   final String username;
-  @override
-  @JsonKey()
-  final bool isPremium;
 
   @override
   String toString() {
-    return 'User(id: $id, username: $username, isPremium: $isPremium)';
+    return 'User(id: $id, username: $username)';
   }
 
   @override
@@ -149,14 +134,12 @@ class _$UserImpl implements _User {
             other is _$UserImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.username, username) ||
-                other.username == username) &&
-            (identical(other.isPremium, isPremium) ||
-                other.isPremium == isPremium));
+                other.username == username));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, username, isPremium);
+  int get hashCode => Object.hash(runtimeType, id, username);
 
   /// Create a copy of User
   /// with the given fields replaced by the non-null parameter values.
@@ -175,10 +158,8 @@ class _$UserImpl implements _User {
 }
 
 abstract class _User implements User {
-  const factory _User(
-      {required final int id,
-      required final String username,
-      final bool isPremium}) = _$UserImpl;
+  const factory _User({required final int id, required final String username}) =
+      _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
@@ -186,8 +167,6 @@ abstract class _User implements User {
   int get id;
   @override
   String get username;
-  @override
-  bool get isPremium;
 
   /// Create a copy of User
   /// with the given fields replaced by the non-null parameter values.

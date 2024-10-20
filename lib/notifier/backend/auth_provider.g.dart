@@ -1,25 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'tab_notifier.dart';
+part of 'auth_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$tabNotifierHash() => r'78b05177f47c1b94a5b0aca89aba50e241a590be';
+String _$authHash() => r'11d48448e922cc8336326384f275a43b6807ef58';
 
-/// See also [TabNotifier].
-@ProviderFor(TabNotifier)
-final tabNotifierProvider =
-    AutoDisposeNotifierProvider<TabNotifier, List<TabTodo>>.internal(
-  TabNotifier.new,
-  name: r'tabNotifierProvider',
+/// See also [Auth].
+@ProviderFor(Auth)
+final authProvider = AutoDisposeNotifierProvider<Auth, bool>.internal(
+  Auth.new,
+  name: r'authProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$tabNotifierHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$authHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$TabNotifier = AutoDisposeNotifier<List<TabTodo>>;
+typedef _$Auth = AutoDisposeNotifier<bool>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

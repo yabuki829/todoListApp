@@ -5,8 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todoapp/utils/share_preference.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); 
+  WidgetsFlutterBinding.ensureInitialized();
   await SharedPreferencesInstance.initialize();
+  
   runApp(const ProviderScope(child: MyApp()));
 }
 
