@@ -7,11 +7,11 @@ part "comment.g.dart";
 class Comment with _$Comment {
   // プロパティを指定
   const factory Comment({
+    required String todoId,
     required String id,
     required String text,
     required DateTime createdAt,
     // required User user,
-    
   }) = _Comment;
 
   factory Comment.fromJson(Map<String, dynamic> json) =>

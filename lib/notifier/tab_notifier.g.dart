@@ -6,7 +6,7 @@ part of 'tab_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$tabNotifierHash() => r'd09a7d36596d74e7b00534745c842e4e3c8e458d';
+String _$tabNotifierHash() => r'3d19532fbf9c3af1e211f763e83e8b6d1396cc6f';
 
 /// See also [TabNotifier].
 @ProviderFor(TabNotifier)

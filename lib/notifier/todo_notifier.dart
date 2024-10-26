@@ -91,16 +91,4 @@ class TodoNotifier extends _$TodoNotifier {
     final todosJson = jsonEncode(state.map((todo) => todo.toJson()).toList());
     await prefs.setString('todos', todosJson);
   }
-
-  Future<void> addComment(String todoId, String commentText) async {
-    state = state.map((todo) {
-      if (todo.id == todoId) {
-        todo.comments.add(Comment(
-            id: generateNonce(), text: commentText, createdAt: DateTime.now()));
-      }
-      return todo;
-    }).toList();
-
-    await _saveTodos();
-  }
 }

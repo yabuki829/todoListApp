@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todoapp/notifier/comment_provider.dart';
 import 'package:todoapp/notifier/todo_notifier.dart';
 import 'package:todoapp/utils/date_format.dart';
 
@@ -18,7 +19,10 @@ class _DetailTodoViewState extends ConsumerState<DetailTodoView> {
   Widget build(BuildContext context) {
     final todo =
         ref.watch(todoNotifierProvider.notifier).getById(widget.todoId);
-
+    final comments = ref
+        .watch(commentNotifierProvider)
+        .where((comment) => comment.todoId == todo.id)
+        .toList();
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
@@ -52,32 +56,32 @@ class _DetailTodoViewState extends ConsumerState<DetailTodoView> {
                   hintText: "新しいコメントを入力",
                 ),
                 onSubmitted: (value) {
-                  // ref
-                  //     .read(todoListNotifierProvider.notifier)
-                  //     .addComment(todoId: todo.id, commentText: value);
-                  // _controller.clear();
+                  print("コメントを追加します。");
+                  ref
+                      .read(commentNotifierProvider.notifier)
+                      .add(value, todo.id);
+                  _controller.clear();
                 },
               ),
             ),
           ),
         ),
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              return ListTile(
-                selectedColor: Colors.grey,
-                title: Text(todo.comments[index].text),
-                trailing: IconButton(
-                  onPressed: () {
-                    // ref.read(todoListNotifierProvider.notifier).deleteComment(
-                    //     todoId: todo.id, commentId: todo.comments[index].id);
-                  },
-                  icon: const Icon(Icons.delete),
-                ),
-              );
-            },
-            childCount: todo.comments.length,
-          ),
+        SliverList.separated(
+          separatorBuilder: (context, index) => const Divider(),
+          itemBuilder: (context, index) {
+            return ListTile(
+              selectedColor: Colors.grey,
+              title: Text(comments[index].text),
+              trailing: IconButton(
+                onPressed: () {
+                  ref.read(commentNotifierProvider.notifier).deleteComment(
+                      todoId: todo.id, commentId: comments[index].id);
+                },
+                icon: const Icon(Icons.delete),
+              ),
+            );
+          },
+          itemCount: comments.length,
         ),
       ],
     );

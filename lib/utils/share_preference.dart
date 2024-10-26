@@ -4,7 +4,8 @@ class SharedPreferencesInstance {
   static late final SharedPreferences _prefs;
   SharedPreferences get prefs => _prefs;
 
-  static final SharedPreferencesInstance _instance = SharedPreferencesInstance._internal();
+  static final SharedPreferencesInstance _instance =
+      SharedPreferencesInstance._internal();
 
   SharedPreferencesInstance._internal();
 

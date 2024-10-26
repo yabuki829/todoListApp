@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todoapp/animation/noamimation.dart';
 import 'package:todoapp/BaseView.dart';
-import 'package:todoapp/views/NewsView.dart';
 import 'package:todoapp/views/Settings.dart';
 import 'package:todoapp/views/TodoView.dart';
 import 'package:todoapp/views/timer_view.dart';
@@ -25,8 +24,7 @@ final router = GoRouter(
         return BaseView(
           selectedIndex: switch (state.uri.path) {
             var path when path.startsWith('/timer') => 1,
-            var path when path.startsWith('/news') => 2,
-            var path when path.startsWith('/settings') => 3,
+            var path when path.startsWith('/settings') => 2,
             var path when path.startsWith('/') => 0,
             _ => 0,
           },
@@ -53,12 +51,6 @@ final router = GoRouter(
           name: 'settings',
           pageBuilder: (context, state) =>
               buildTransitionPage(child: const SettingsView()),
-        ),
-        GoRoute(
-          path: '/news',
-          name: 'news',
-          pageBuilder: (context, state) =>
-              buildTransitionPage(child: const NewsVew()),
         ),
       ],
     )

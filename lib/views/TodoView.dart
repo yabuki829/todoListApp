@@ -35,6 +35,7 @@ class _TodoviewState extends ConsumerState<Todoview> {
 
   void _openDetailTodoView({required String todoId}) {
     showModalBottomSheet(
+      useRootNavigator: true,
       isDismissible: true,
       isScrollControlled: true,
       context: context,
@@ -70,9 +71,8 @@ class _TodoviewState extends ConsumerState<Todoview> {
         .toList();
 
     return DefaultTabController(
-      // initialIndex: 0,
+      initialIndex: selectedIndex,
       length: tabs.length,
-
       child: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return [

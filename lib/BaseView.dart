@@ -21,9 +21,9 @@ class _BaseViewState extends State<BaseView> {
     setState(() {
       switch (index) {
         case 0:
-          context.go('/timer');
-        case 1:
           context.go('/');
+        case 1:
+          context.go('/timer');
 
         case 2:
           context.go('/settings');
@@ -76,16 +76,17 @@ class _BaseViewState extends State<BaseView> {
               labelBehavior:
                   NavigationDestinationLabelBehavior.onlyShowSelected,
               selectedIndex: widget.selectedIndex,
+
               destinations: const [
-                NavigationDestination(
-                  icon: Icon(Icons.timer_outlined),
-                  label: 'タイマー',
-                  selectedIcon: Icon(Icons.timer_outlined, color: Colors.white),
-                ),
                 NavigationDestination(
                   icon: Icon(Icons.home),
                   label: 'ホーム',
                   selectedIcon: Icon(Icons.house_outlined, color: Colors.white),
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.timer_outlined),
+                  label: 'タイマー',
+                  selectedIcon: Icon(Icons.timer_outlined, color: Colors.white),
                 ),
                 NavigationDestination(
                   icon: Icon(Icons.settings),
