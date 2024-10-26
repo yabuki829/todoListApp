@@ -22,7 +22,6 @@ TabTodo _$TabTodoFromJson(Map<String, dynamic> json) {
 mixin _$TabTodo {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
-  List<Todo> get todos => throw _privateConstructorUsedError;
   int get priority => throw _privateConstructorUsedError;
 
   /// Serializes this TabTodo to a JSON map.
@@ -39,7 +38,7 @@ abstract class $TabTodoCopyWith<$Res> {
   factory $TabTodoCopyWith(TabTodo value, $Res Function(TabTodo) then) =
       _$TabTodoCopyWithImpl<$Res, TabTodo>;
   @useResult
-  $Res call({String id, String title, List<Todo> todos, int priority});
+  $Res call({String id, String title, int priority});
 }
 
 /// @nodoc
@@ -59,7 +58,6 @@ class _$TabTodoCopyWithImpl<$Res, $Val extends TabTodo>
   $Res call({
     Object? id = null,
     Object? title = null,
-    Object? todos = null,
     Object? priority = null,
   }) {
     return _then(_value.copyWith(
@@ -71,10 +69,6 @@ class _$TabTodoCopyWithImpl<$Res, $Val extends TabTodo>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      todos: null == todos
-          ? _value.todos
-          : todos // ignore: cast_nullable_to_non_nullable
-              as List<Todo>,
       priority: null == priority
           ? _value.priority
           : priority // ignore: cast_nullable_to_non_nullable
@@ -90,7 +84,7 @@ abstract class _$$TabTodoImplCopyWith<$Res> implements $TabTodoCopyWith<$Res> {
       __$$TabTodoImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String title, List<Todo> todos, int priority});
+  $Res call({String id, String title, int priority});
 }
 
 /// @nodoc
@@ -108,7 +102,6 @@ class __$$TabTodoImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? title = null,
-    Object? todos = null,
     Object? priority = null,
   }) {
     return _then(_$TabTodoImpl(
@@ -120,10 +113,6 @@ class __$$TabTodoImplCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      todos: null == todos
-          ? _value._todos
-          : todos // ignore: cast_nullable_to_non_nullable
-              as List<Todo>,
       priority: null == priority
           ? _value.priority
           : priority // ignore: cast_nullable_to_non_nullable
@@ -136,11 +125,7 @@ class __$$TabTodoImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$TabTodoImpl implements _TabTodo {
   const _$TabTodoImpl(
-      {required this.id,
-      required this.title,
-      required final List<Todo> todos,
-      this.priority = 0})
-      : _todos = todos;
+      {required this.id, required this.title, this.priority = 0});
 
   factory _$TabTodoImpl.fromJson(Map<String, dynamic> json) =>
       _$$TabTodoImplFromJson(json);
@@ -149,21 +134,13 @@ class _$TabTodoImpl implements _TabTodo {
   final String id;
   @override
   final String title;
-  final List<Todo> _todos;
-  @override
-  List<Todo> get todos {
-    if (_todos is EqualUnmodifiableListView) return _todos;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_todos);
-  }
-
   @override
   @JsonKey()
   final int priority;
 
   @override
   String toString() {
-    return 'TabTodo(id: $id, title: $title, todos: $todos, priority: $priority)';
+    return 'TabTodo(id: $id, title: $title, priority: $priority)';
   }
 
   @override
@@ -173,15 +150,13 @@ class _$TabTodoImpl implements _TabTodo {
             other is _$TabTodoImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
-            const DeepCollectionEquality().equals(other._todos, _todos) &&
             (identical(other.priority, priority) ||
                 other.priority == priority));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title,
-      const DeepCollectionEquality().hash(_todos), priority);
+  int get hashCode => Object.hash(runtimeType, id, title, priority);
 
   /// Create a copy of TabTodo
   /// with the given fields replaced by the non-null parameter values.
@@ -203,7 +178,6 @@ abstract class _TabTodo implements TabTodo {
   const factory _TabTodo(
       {required final String id,
       required final String title,
-      required final List<Todo> todos,
       final int priority}) = _$TabTodoImpl;
 
   factory _TabTodo.fromJson(Map<String, dynamic> json) = _$TabTodoImpl.fromJson;
@@ -212,8 +186,6 @@ abstract class _TabTodo implements TabTodo {
   String get id;
   @override
   String get title;
-  @override
-  List<Todo> get todos;
   @override
   int get priority;
 

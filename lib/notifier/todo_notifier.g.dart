@@ -6,12 +6,12 @@ part of 'todo_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$todoNotifierHash() => r'85289381d25054470692ae6db8a29100367805ba';
+String _$todoNotifierHash() => r'94c58798be3f0ce23cd7d6b0aef15c5f0c3f9d3c';
 
 /// See also [TodoNotifier].
 @ProviderFor(TodoNotifier)
 final todoNotifierProvider =
-    AutoDisposeAsyncNotifierProvider<TodoNotifier, List<Todo>>.internal(
+    AutoDisposeNotifierProvider<TodoNotifier, List<Todo>>.internal(
   TodoNotifier.new,
   name: r'todoNotifierProvider',
   debugGetCreateSourceHash:
@@ -20,6 +20,6 @@ final todoNotifierProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$TodoNotifier = AutoDisposeAsyncNotifier<List<Todo>>;
+typedef _$TodoNotifier = AutoDisposeNotifier<List<Todo>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

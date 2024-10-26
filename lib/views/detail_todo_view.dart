@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todoapp/notifier/tab_notifier.dart';
+import 'package:todoapp/notifier/todo_notifier.dart';
 import 'package:todoapp/utils/date_format.dart';
 
 class DetailTodoView extends ConsumerStatefulWidget {
-  const DetailTodoView({super.key, required this.todoId, required this.tabId});
+  const DetailTodoView({super.key, required this.todoId});
 
   final String todoId;
-  final String tabId;
   @override
   ConsumerState<DetailTodoView> createState() => _DetailTodoViewState();
 }
@@ -17,10 +16,8 @@ class _DetailTodoViewState extends ConsumerState<DetailTodoView> {
 
   @override
   Widget build(BuildContext context) {
-    final todo = ref.watch(tabNotifierProvider.notifier).getTodo(
-          tabId: widget.tabId,
-          todoId: widget.todoId,
-        );
+    final todo =
+        ref.watch(todoNotifierProvider.notifier).getById(widget.todoId);
 
     return CustomScrollView(
       slivers: [
@@ -72,7 +69,6 @@ class _DetailTodoViewState extends ConsumerState<DetailTodoView> {
                 title: Text(todo.comments[index].text),
                 trailing: IconButton(
                   onPressed: () {
-                    print("削除します");
                     // ref.read(todoListNotifierProvider.notifier).deleteComment(
                     //     todoId: todo.id, commentId: todo.comments[index].id);
                   },

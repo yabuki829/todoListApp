@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:todoapp/notifier/select_tab_provider.dart';
 import 'package:todoapp/notifier/tab_notifier.dart';
+import 'package:todoapp/notifier/todo_notifier.dart';
 
 class AddTaskDialog extends StatefulWidget {
-  final String tabId;
-  const AddTaskDialog({super.key, required this.tabId});
+  const AddTaskDialog({super.key});
 
   @override
   State<AddTaskDialog> createState() => _AddTaskDialogState();
@@ -79,6 +80,37 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
               ),
               onTap: _showDateTimePicker,
             ),
+            Row(
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    _selectedDateTime = DateTime.now().add(
+                      Duration(
+                        hours: 23 - DateTime.now().hour,
+                        minutes: 59 - DateTime.now().minute,
+                      ),
+                    );
+                    _dateTimeController.text = DateFormat('yyyy年MM月dd日 HH:mm')
+                        .format(_selectedDateTime);
+                  },
+                  child: const Text("今日"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    _selectedDateTime = DateTime.now().add(
+                      Duration(
+                        days: 1,
+                        hours: 23 - DateTime.now().hour,
+                        minutes: 59 - DateTime.now().minute,
+                      ),
+                    );
+                    _dateTimeController.text = DateFormat('yyyy年MM月dd日 HH:mm')
+                        .format(_selectedDateTime);
+                  },
+                  child: const Text("明日"),
+                ),
+              ],
+            )
           ],
         ),
       ),
@@ -91,11 +123,13 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
           builder: (context, ref, child) {
             return ElevatedButton(
               onPressed: () {
+                final selectedIndex = ref.read(selectTabProvider);
+                final tabId = ref.read(tabNotifierProvider)[selectedIndex].id;
                 if (_titleController.text.isNotEmpty) {
-                  ref.read(tabNotifierProvider.notifier).addTodo(
-                        tabId: widget.tabId,
-                        title: _titleController.text,
-                        deadline: _selectedDateTime,
+                  ref.read(todoNotifierProvider.notifier).add(
+                        _titleController.text,
+                        tabId,
+                        _selectedDateTime,
                       );
                   Navigator.of(context).pop();
                   ScaffoldMessenger.of(context).showSnackBar(

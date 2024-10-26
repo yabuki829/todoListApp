@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todoapp/animation/noamimation.dart';
 import 'package:todoapp/BaseView.dart';
-import 'package:todoapp/views/LoginView.dart';
 import 'package:todoapp/views/NewsView.dart';
 import 'package:todoapp/views/Settings.dart';
 import 'package:todoapp/views/TodoView.dart';
@@ -20,19 +19,6 @@ final router = GoRouter(
   navigatorKey: _rootNavigatorKey,
   initialLocation: '/',
   routes: [
-    GoRoute(
-      path: '/login',
-      name: 'login',
-      builder: (BuildContext context, GoRouterState state) {
-        return const LoginView();
-      },
-    ),
-    GoRoute(
-      path: '/signup',
-      builder: (BuildContext context, GoRouterState state) {
-        return const LoginView();
-      },
-    ),
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
       builder: (BuildContext context, GoRouterState state, Widget child) {

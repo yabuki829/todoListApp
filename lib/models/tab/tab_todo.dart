@@ -10,7 +10,6 @@ class TabTodo with _$TabTodo {
   const factory TabTodo({
     required String id,
     required String title,
-    required List<Todo> todos,
     @Default(0) int priority,
   }) = _TabTodo;
 

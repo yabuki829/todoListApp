@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:todoapp/exceptions/exception.dart';
 import 'package:todoapp/models/tab/tab_todo.dart';
-import 'package:todoapp/models/todo/todo.dart';
+import 'package:todoapp/notifier/select_tab_provider.dart';
 import 'package:todoapp/notifier/tab_notifier.dart';
 import 'package:todoapp/notifier/todo_notifier.dart';
 import 'package:todoapp/responsive.dart';
 import 'package:todoapp/views/detail_todo_view.dart';
-import 'package:todoapp/widget/TodoItemWidget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todoapp/widget/TodoItemWidget.dart';
 import 'package:todoapp/widget/add_tab_dialog.dart';
-import 'package:todoapp/widget/add_task_dialog.dart';
 import 'package:todoapp/widget/tab_item.dart';
 
 class Todoview extends ConsumerStatefulWidget {
@@ -25,12 +23,17 @@ class _TodoviewState extends ConsumerState<Todoview> {
   final TextEditingController _controller = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
 
-  void _openDetailTodoView({required String tabId, required String todoId}) {
+  void _openDetailTodoView({required String todoId}) {
     showModalBottomSheet(
       isDismissible: true,
       isScrollControlled: true,
@@ -40,18 +43,8 @@ class _TodoviewState extends ConsumerState<Todoview> {
           heightFactor: 0.8,
           child: DetailTodoView(
             todoId: todoId,
-            tabId: tabId,
           ),
         );
-      },
-    );
-  }
-
-  void _openAddTodoView({required String tabId}) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AddTaskDialog(tabId: tabId);
       },
     );
   }
@@ -68,14 +61,18 @@ class _TodoviewState extends ConsumerState<Todoview> {
   @override
   Widget build(BuildContext context) {
     String myGoal = "一流のプログラマになる";
-    final double deviceWidth = MediaQuery.of(context).size.width;
+    final selectedIndex = ref.watch(selectTabProvider);
     final tabs = ref.watch(tabNotifierProvider);
-    final todoNotifier = ref.watch(todoNotifierProvider);
-    print(todoNotifier);
-    var selectedIndex = 0;
+    final deviceWidth = MediaQuery.of(context).size.width;
+    final todoList = ref
+        .watch(todoNotifierProvider)
+        .where((todo) => todo.tabId == tabs[selectedIndex].id)
+        .toList();
+
     return DefaultTabController(
       // initialIndex: 0,
       length: tabs.length,
+
       child: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return [
@@ -100,7 +97,19 @@ class _TodoviewState extends ConsumerState<Todoview> {
               ),
               actions: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (tabs.length > 1) {
+                      ref
+                          .read(tabNotifierProvider.notifier)
+                          .delete(tabId: tabs[selectedIndex].id);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("タブが0個になってしまいます。"),
+                        ),
+                      );
+                    }
+                  },
                   icon: const Icon(Icons.delete),
                 ),
               ],
@@ -125,14 +134,19 @@ class _TodoviewState extends ConsumerState<Todoview> {
                                       BorderRadius.all(Radius.circular(10)),
                                 ),
                                 labelColor: Colors.white,
-                                unselectedLabelColor: Colors.black54,
                                 tabs: tabs.map((TabTodo tab) {
                                   return TabItem(
-                                      title: tab.title,
-                                      count: tab.todos.length);
+                                    title: tab.title,
+                                    count: ref
+                                        .watch(todoNotifierProvider.notifier)
+                                        .get(tab.id)
+                                        .length,
+                                  );
                                 }).toList(),
                                 onTap: (index) {
-                                  selectedIndex = index;
+                                  ref
+                                      .read(selectTabProvider.notifier)
+                                      .selectTab(index);
                                 },
                               ),
                             ),
@@ -154,64 +168,31 @@ class _TodoviewState extends ConsumerState<Todoview> {
             )
           ];
         },
-        body: tabs.isEmpty
-            ? const Center(child: Text("タブがありません"))
-            : TabBarView(
-                children: tabs.map((tab) {
-                  final todoList = tab.todos;
-                  return Stack(
-                    children: [
-                      todoList.isEmpty
-                          ? const Center(child: Text("タスクがありません"))
-                          : ListView.builder(
-                              padding: EdgeInsets.zero,
-                              itemCount: todoList.length,
-                              itemBuilder: (context, todoIndex) {
-                                return Card(
-                                  margin: deviceWidth >= Responsive.md.width
-                                      ? const EdgeInsets.all(16.0)
-                                      : const EdgeInsets.all(4.0),
-                                  elevation: 4,
-                                  child: ListTile(
-                                    title: TodoItemWidget(
-                                        todo: todoList[todoIndex]),
-                                    onTap: () {
-                                      if (todoIndex < todoList.length) {
-                                        _openDetailTodoView(
-                                            tabId: tab.id,
-                                            todoId: todoList[todoIndex].id);
-                                      }
-                                    },
-                                    trailing: IconButton(
-                                        onPressed: () {
-                                          ref
-                                              .read(
-                                                  tabNotifierProvider.notifier)
-                                              .deleteTodo(
-                                                  tabId: tab.id,
-                                                  todoId:
-                                                      todoList[todoIndex].id);
-                                        },
-                                        icon: const Icon(Icons.delete)),
-                                  ),
-                                );
-                              },
-                            ),
-                      Positioned(
-                        bottom: 16.0,
-                        right: 16.0,
-                        child: FloatingActionButton(
+        body: todoList.isEmpty
+            ? const Center(child: Text("タスクがありません"))
+            : ListView.builder(
+                itemBuilder: (context, index) {
+                  return Card(
+                    margin: deviceWidth >= Responsive.md.width
+                        ? const EdgeInsets.all(16.0)
+                        : const EdgeInsets.all(4.0),
+                    elevation: 4,
+                    child: ListTile(
+                      title: TodoItemWidget(todo: todoList[index]),
+                      onTap: () {
+                        _openDetailTodoView(todoId: todoList[index].id);
+                      },
+                      trailing: IconButton(
                           onPressed: () {
-                            // final currentTab = tabs[selectedIndex];
-                            // _openAddTodoView(tabId: currentTab.id);
-                            // print(currentTab.title);
+                            ref
+                                .read(todoNotifierProvider.notifier)
+                                .delete(todoList[index].id);
                           },
-                          child: const Icon(Icons.add),
-                        ),
-                      ),
-                    ],
+                          icon: const Icon(Icons.delete)),
+                    ),
                   );
-                }).toList(),
+                },
+                itemCount: todoList.length,
               ),
       ),
     );

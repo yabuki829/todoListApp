@@ -8,6 +8,7 @@ part "todo.g.dart";
 class Todo with _$Todo {
   // プロパティを指定
   const factory Todo({
+    required String tabId,
     required String id,
     required String title,
     required bool isDone,

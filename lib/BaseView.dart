@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todoapp/responsive.dart';
+import 'package:todoapp/widget/add_task_dialog.dart';
 
 class BaseView extends StatefulWidget {
   const BaseView({
@@ -20,12 +21,11 @@ class _BaseViewState extends State<BaseView> {
     setState(() {
       switch (index) {
         case 0:
-          context.go('/');
-        case 1:
           context.go('/timer');
+        case 1:
+          context.go('/');
+
         case 2:
-          context.go('/news');
-        case 3:
           context.go('/settings');
       }
     });
@@ -56,12 +56,6 @@ class _BaseViewState extends State<BaseView> {
                   selectedIcon: Icon(Icons.timer_outlined, color: Colors.white),
                 ),
                 NavigationRailDestination(
-                  icon: Icon(Icons.newspaper),
-                  label: Text('ニュース'),
-                  selectedIcon:
-                      Icon(Icons.newspaper_outlined, color: Colors.white),
-                ),
-                NavigationRailDestination(
                   icon: Icon(Icons.settings),
                   label: Text('設定'),
                   selectedIcon: Icon(Icons.settings, color: Colors.white),
@@ -84,20 +78,14 @@ class _BaseViewState extends State<BaseView> {
               selectedIndex: widget.selectedIndex,
               destinations: const [
                 NavigationDestination(
-                  icon: Icon(Icons.home),
-                  label: 'ホーム',
-                  selectedIcon: Icon(Icons.house_outlined, color: Colors.white),
-                ),
-                NavigationDestination(
                   icon: Icon(Icons.timer_outlined),
                   label: 'タイマー',
                   selectedIcon: Icon(Icons.timer_outlined, color: Colors.white),
                 ),
                 NavigationDestination(
-                  icon: Icon(Icons.newspaper),
-                  label: 'ニュース',
-                  selectedIcon:
-                      Icon(Icons.newspaper_outlined, color: Colors.white),
+                  icon: Icon(Icons.home),
+                  label: 'ホーム',
+                  selectedIcon: Icon(Icons.house_outlined, color: Colors.white),
                 ),
                 NavigationDestination(
                   icon: Icon(Icons.settings),
@@ -107,6 +95,20 @@ class _BaseViewState extends State<BaseView> {
               ],
             )
           : null,
+      floatingActionButton:
+          deviceWidth < Responsive.md.width && widget.selectedIndex == 0
+              ? FloatingActionButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const AddTaskDialog();
+                      },
+                    );
+                  },
+                  child: const Icon(Icons.add),
+                )
+              : null,
     );
   }
 }
