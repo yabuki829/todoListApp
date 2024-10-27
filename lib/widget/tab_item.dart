@@ -13,7 +13,6 @@ class TabItem extends StatelessWidget {
         children: [
           Text(
             title,
-            overflow: TextOverflow.ellipsis,
           ),
           count > 0
               ? Container(

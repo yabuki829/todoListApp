@@ -86,6 +86,11 @@ class TodoNotifier extends _$TodoNotifier {
     await _saveTodos();
   }
 
+  Future<void> update(Todo todo) async {
+    state = state.map((item) => item.id == todo.id ? todo : item).toList();
+    await _saveTodos();
+  }
+
   Future<void> _saveTodos() async {
     final prefs = await SharedPreferences.getInstance();
     final todosJson = jsonEncode(state.map((todo) => todo.toJson()).toList());

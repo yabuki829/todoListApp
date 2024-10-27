@@ -73,101 +73,71 @@ class _TodoviewState extends ConsumerState<Todoview> {
     return DefaultTabController(
       initialIndex: selectedIndex,
       length: tabs.length,
-      child: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return [
-            SliverAppBar(
-              pinned: true,
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    widget.title,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    myGoal,
-                    style: const TextStyle(
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    if (tabs.length > 1) {
-                      ref
-                          .read(tabNotifierProvider.notifier)
-                          .delete(tabId: tabs[selectedIndex].id);
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("タブが0個になってしまいます。"),
-                        ),
-                      );
-                    }
-                  },
-                  icon: const Icon(Icons.delete),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                widget.title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
                 ),
-              ],
-              bottom: tabs.isNotEmpty
-                  ? PreferredSize(
-                      preferredSize: const Size.fromHeight(50),
-                      child: ClipRRect(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10)),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 4,
-                              child: TabBar(
-                                tabAlignment: TabAlignment.start,
-                                isScrollable: true,
-                                indicatorSize: TabBarIndicatorSize.tab,
-                                dividerColor: Colors.transparent,
-                                indicator: const BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                ),
-                                labelColor: Colors.white,
-                                tabs: tabs.map((TabTodo tab) {
-                                  return TabItem(
-                                    title: tab.title,
-                                    count: ref
-                                        .watch(todoNotifierProvider.notifier)
-                                        .get(tab.id)
-                                        .length,
-                                  );
-                                }).toList(),
-                                onTap: (index) {
-                                  ref
-                                      .read(selectTabProvider.notifier)
-                                      .selectTab(index);
-                                },
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                _openAddTabView();
-                              },
-                              icon: const Icon(
-                                Icons.add_circle_outlined,
-                                size: 40,
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  : null,
-            )
-          ];
-        },
+              ),
+              Text(
+                myGoal,
+                style: const TextStyle(
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                if (tabs.length > 1) {
+                  ref
+                      .read(tabNotifierProvider.notifier)
+                      .delete(tabId: tabs[selectedIndex].id);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("タブが0個になってしまいます。"),
+                    ),
+                  );
+                }
+              },
+              icon: const Icon(Icons.delete),
+            ),
+            IconButton(
+              onPressed: () {
+                _openAddTabView();
+              },
+              icon: const Icon(Icons.add),
+            ),
+          ],
+          bottom: TabBar(
+            tabAlignment: TabAlignment.start,
+            isScrollable: true,
+            indicatorSize: TabBarIndicatorSize.tab,
+            dividerColor: Colors.transparent,
+            indicator: const BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            labelColor: Colors.white,
+            tabs: tabs.map((TabTodo tab) {
+              return TabItem(
+                title: tab.title,
+                count:
+                    ref.watch(todoNotifierProvider.notifier).get(tab.id).length,
+              );
+            }).toList(),
+            onTap: (index) {
+              ref.read(selectTabProvider.notifier).selectTab(index);
+            },
+          ),
+        ),
         body: todoList.isEmpty
             ? const Center(child: Text("タスクがありません"))
             : ListView.builder(
@@ -175,20 +145,24 @@ class _TodoviewState extends ConsumerState<Todoview> {
                   return Card(
                     margin: deviceWidth >= Responsive.md.width
                         ? const EdgeInsets.all(16.0)
-                        : const EdgeInsets.all(4.0),
+                        : const EdgeInsets.all(12.0),
                     elevation: 4,
                     child: ListTile(
+                      leading: Checkbox(
+                        value: todoList[index].isDone,
+                        onChanged: (value) {
+                          final updatedTodo = todoList[index].copyWith(
+                            isDone: !todoList[index].isDone,
+                          );
+                          ref
+                              .read(todoNotifierProvider.notifier)
+                              .update(updatedTodo);
+                        },
+                      ),
                       title: TodoItemWidget(todo: todoList[index]),
                       onTap: () {
                         _openDetailTodoView(todoId: todoList[index].id);
                       },
-                      trailing: IconButton(
-                          onPressed: () {
-                            ref
-                                .read(todoNotifierProvider.notifier)
-                                .delete(todoList[index].id);
-                          },
-                          icon: const Icon(Icons.delete)),
                     ),
                   );
                 },

@@ -76,9 +76,9 @@ class _BaseViewState extends State<BaseView> {
               labelBehavior:
                   NavigationDestinationLabelBehavior.onlyShowSelected,
               selectedIndex: widget.selectedIndex,
-
+              
               destinations: const [
-                NavigationDestination(
+                   NavigationDestination(
                   icon: Icon(Icons.home),
                   label: 'ホーム',
                   selectedIcon: Icon(Icons.house_outlined, color: Colors.white),
@@ -88,6 +88,7 @@ class _BaseViewState extends State<BaseView> {
                   label: 'タイマー',
                   selectedIcon: Icon(Icons.timer_outlined, color: Colors.white),
                 ),
+             
                 NavigationDestination(
                   icon: Icon(Icons.settings),
                   label: '設定',

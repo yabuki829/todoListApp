@@ -25,19 +25,36 @@ class _DetailTodoViewState extends ConsumerState<DetailTodoView> {
         .toList();
     return CustomScrollView(
       slivers: [
+        SliverAppBar(
+          title: Text(
+            todo.title,
+            style: const TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                ref.read(todoNotifierProvider.notifier).delete(todo.id);
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.delete),
+            ),
+          ],
+        ),
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  todo.title,
-                  style: const TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
                 Text(DateFormater.formatHowManyDays(todo.deadline)),
                 Text(DateFormater.format(todo.deadline)),
               ],

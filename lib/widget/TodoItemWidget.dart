@@ -12,22 +12,14 @@ class TodoItemWidget extends StatefulWidget {
 class _TodoItemWidgetState extends State<TodoItemWidget> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        widget.todo.isDone
-            ? const Icon(Icons.check_box_outlined)
-            : const Icon(Icons.check_box_outline_blank),
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            child: Text(
-              widget.todo.title,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 4,
-            ),
-          ),
-        ),
-      ],
+    return Text(
+      widget.todo.title,
+      textAlign: TextAlign.left,
+      style: widget.todo.isDone
+          ? const TextStyle(
+              decoration: TextDecoration.lineThrough,
+            )
+          : null,
     );
   }
 }
