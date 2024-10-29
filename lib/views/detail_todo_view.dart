@@ -26,13 +26,6 @@ class _DetailTodoViewState extends ConsumerState<DetailTodoView> {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
-          title: Text(
-            todo.title,
-            style: const TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -55,8 +48,25 @@ class _DetailTodoViewState extends ConsumerState<DetailTodoView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(DateFormater.formatHowManyDays(todo.deadline)),
-                Text(DateFormater.format(todo.deadline)),
+                Text(
+                  todo.title,
+                  style: const TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Row(
+                  children: [
+                    const Text("期限:"),
+                    Text(DateFormater.formatHowManyDays(todo.deadline)),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Text("作成日:"),
+                    Text(DateFormater.format(todo.createdAt)),
+                  ],
+                ),
               ],
             ),
           ),
