@@ -60,6 +60,12 @@ class TabNotifier extends _$TabNotifier {
     ref.read(todoNotifierProvider.notifier).delete(tabId);
     _saveTabs();
   }
+
+  Future<void> reorder({required int oldIndex, required int newIndex}) async {
+    final item = state.removeAt(oldIndex);
+    state.insert(newIndex, item);
+    _saveTabs();
+  }
 }
 
 //flutter pub run build_runner build --delete-conflicting-outputs
