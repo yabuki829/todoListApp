@@ -163,12 +163,42 @@ class _TodoviewState extends ConsumerState<Todoview> {
                       onTap: () {
                         _openDetailTodoView(todoId: todoList[index].id);
                       },
+                      onLongPress: () {
+                        // タスクの削除
+                        _deleteTodoDialog(todoList[index].id);
+                      },
                     ),
                   );
                 },
                 itemCount: todoList.length,
               ),
       ),
+    );
+  }
+
+  void _deleteTodoDialog(String todoId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("タスクを削除しますか？"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                ref.read(todoNotifierProvider.notifier).delete(todoId);
+                Navigator.of(context).pop();
+              },
+              child: const Text("はい"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("いいえ"),
+            ),
+          ],
+        );
+      },
     );
   }
 }
